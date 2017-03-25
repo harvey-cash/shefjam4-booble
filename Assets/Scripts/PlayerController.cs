@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
             ceiling[j, i].transform.position = new Vector3(i - (maxLength / 2), 0, j - (maxLength / 2));
             ceiling[j, i].transform.parent = ceilingParent;
 
-            transform.position = startVector;
+            //transform.position = startVector;
         }        
     }
     
@@ -68,37 +68,39 @@ public class PlayerController : MonoBehaviour
     }
 
     private bool canRoll = true;
+    private const float ROLL_SPEED = 2;
     private IEnumerator Roll(Vector3 rotatePoint, Vector3 axis)
     {
         canRoll = false;
-        Transform endTransform = GetEndTransform(rotatePoint, axis);
-        Debug.Log(endTransform.position);
+
+        Transform newTransform = new GameObject().transform;
+        newTransform = GetNextTransform(newTransform, rotatePoint, axis);
 
         float totalRotation = 0;
         while (totalRotation < 90)
         {
-            transform.RotateAround(rotatePoint, axis, 90 * Time.deltaTime);
-            totalRotation += 90 * Time.deltaTime;
+            transform.RotateAround(rotatePoint, axis, 90 * Time.deltaTime * ROLL_SPEED);
+            totalRotation += 90 * Time.deltaTime * ROLL_SPEED;
 
             yield return new WaitForEndOfFrame();
         }
 
-        transform.position = endTransform.position;
-        transform.rotation = endTransform.rotation;
-        Destroy(endTransform.gameObject);
+        transform.position = newTransform.position;
+        transform.rotation = newTransform.rotation;
+        Destroy(newTransform.gameObject);
         
         BuildCeiling((int)Mathf.Round(transform.position.z) + (maxLength / 2), (int)Mathf.Round(transform.position.x) + (maxLength / 2));
 
         canRoll = true;
     }
 
-    Transform GetEndTransform(Vector3 rotatePoint, Vector3 axis)
+    private Transform GetNextTransform(Transform temporary, Vector3 rotatePoint, Vector3 axis)
     {
-        GameObject newObject = new GameObject();
-        newObject.transform.position = transform.position;
-        newObject.transform.rotation = transform.rotation;
+        temporary.position = transform.position;
+        temporary.rotation = transform.rotation;
 
-        newObject.transform.RotateAround(rotatePoint, axis, 90 * Time.deltaTime);
-        return newObject.transform;
+        temporary.RotateAround(rotatePoint, axis, 90);
+
+        return temporary;
     }
 }

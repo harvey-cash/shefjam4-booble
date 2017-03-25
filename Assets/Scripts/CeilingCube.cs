@@ -5,14 +5,14 @@ using UnityEngine;
 public class CeilingCube : MonoBehaviour {
 
     [SerializeField] private int health;
-    private int maxHealth = 1000;
+    private int maxHealth = 100;
 
     void Start()
     {
         health = maxHealth;
     }
 
-	void Damage(int damage)
+	public void Damage(int damage)
     {
         health -= damage;
         gameObject.GetComponent<Renderer>().material.color = Color.Lerp(Color.red, Color.white, health / (float)maxHealth);
@@ -24,6 +24,6 @@ public class CeilingCube : MonoBehaviour {
 
     void Update()
     {
-        Damage(1);
+        //Damage(1);
     }
 }
