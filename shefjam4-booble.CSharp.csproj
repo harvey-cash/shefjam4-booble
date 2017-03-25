@@ -77,6 +77,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\CeilingCube.cs" />
+    <Compile Include="Assets\Scripts\CentreCube.cs" />
     <Compile Include="Assets\Scripts\Meteor.cs" />
     <Compile Include="Assets\Scripts\MeteorController.cs" />
     <Compile Include="Assets\Scripts\ObjectRemoval.cs" />

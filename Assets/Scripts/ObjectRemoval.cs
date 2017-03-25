@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class ObjectRemoval : MonoBehaviour {
 
-	void OnTriggerEnter(Collider meteor)
+	void OnTriggerEnter(Collider toDestroy)
     {
-        if(meteor.gameObject.GetComponent<Meteor>() != null)
+        if(toDestroy.gameObject.GetComponent<Meteor>() != null || toDestroy.gameObject.GetComponent<CeilingCube>() != null)
         {
-            Destroy(meteor.gameObject);
+            Destroy(toDestroy.gameObject);
         }
     }
 }

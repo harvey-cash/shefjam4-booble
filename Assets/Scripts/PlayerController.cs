@@ -5,12 +5,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private static int maxLength = 15;
-    private bool[,] ceilingBools = new bool[maxLength, maxLength];
+    public static int maxWidth = 25;
+    public static CeilingCube[,] ceiling = new CeilingCube[maxWidth, maxWidth];
 
     private Transform ceilingParent;
-    private CeilingCube[,] ceiling = new CeilingCube[maxLength, maxLength];
-
     private Vector3 startVector;
 
     void Start()
@@ -18,9 +16,8 @@ public class PlayerController : MonoBehaviour
         startVector = transform.position;
 
         ceilingParent = new GameObject("Ceiling Parent").transform;
-
-        ceilingBools[maxLength / 2, maxLength / 2] = true;
-        BuildCeiling(maxLength / 2, maxLength / 2);
+        ceiling[maxWidth / 2, maxWidth / 2] = Instantiate((GameObject)Resources.Load("Prefabs/CentreCube")).GetComponent<CeilingCube>();
+        
     }
 
     void BuildCeiling(int j, int i)
@@ -28,10 +25,11 @@ public class PlayerController : MonoBehaviour
         if(ceiling[j, i] == null)
         {
             ceiling[j, i] = Instantiate((GameObject)Resources.Load("Prefabs/CeilingCube")).GetComponent<CeilingCube>();
-            ceiling[j, i].transform.position = new Vector3(i - (maxLength / 2), 0, j - (maxLength / 2));
+            ceiling[j, i].SetOrds(j, i);
+            ceiling[j, i].transform.position = new Vector3(i - (maxWidth / 2), 0, j - (maxWidth / 2));
             ceiling[j, i].transform.parent = ceilingParent;
 
-            //transform.position = startVector;
+            //transform.position = startVector + Vector3.up;
         }        
     }
     
@@ -43,10 +41,10 @@ public class PlayerController : MonoBehaviour
 
     void CheckInputs()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) { RollInDirection(Vector3.forward, Vector3.right); }
-        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) { RollInDirection(Vector3.back, Vector3.left); }
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) { RollInDirection(Vector3.left, Vector3.forward); }
-        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) { RollInDirection(Vector3.right, Vector3.back); }
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) { RollInDirection(Vector3.forward, Vector3.right); }
+        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)) { RollInDirection(Vector3.back, Vector3.left); }
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) { RollInDirection(Vector3.left, Vector3.forward); }
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) { RollInDirection(Vector3.right, Vector3.back); }
     }
     
     void RollInDirection(Vector3 direction, Vector3 axis)
@@ -55,8 +53,8 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 nextPos = transform.position + direction;            
 
-            bool withinZBounds = ((int)Mathf.Round(nextPos.z) + (maxLength / 2) > 0 && (int)Mathf.Round(nextPos.z) + (maxLength / 2) < maxLength);
-            bool withinXBounds = ((int)Mathf.Round(nextPos.x) + (maxLength / 2) > 0 && (int)Mathf.Round(nextPos.x) + (maxLength / 2) < maxLength);
+            bool withinZBounds = ((int)Mathf.Round(nextPos.z) + (maxWidth / 2) > 0 && (int)Mathf.Round(nextPos.z) + (maxWidth / 2) < maxWidth);
+            bool withinXBounds = ((int)Mathf.Round(nextPos.x) + (maxWidth / 2) > 0 && (int)Mathf.Round(nextPos.x) + (maxWidth / 2) < maxWidth);
 
             if (withinXBounds && withinZBounds)
             {
@@ -68,7 +66,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private bool canRoll = true;
-    private const float ROLL_SPEED = 2;
+    private const float ROLL_SPEED = 3;
     private IEnumerator Roll(Vector3 rotatePoint, Vector3 axis)
     {
         canRoll = false;
@@ -89,7 +87,7 @@ public class PlayerController : MonoBehaviour
         transform.rotation = newTransform.rotation;
         Destroy(newTransform.gameObject);
         
-        BuildCeiling((int)Mathf.Round(transform.position.z) + (maxLength / 2), (int)Mathf.Round(transform.position.x) + (maxLength / 2));
+        BuildCeiling((int)Mathf.Round(transform.position.z) + (maxWidth / 2), (int)Mathf.Round(transform.position.x) + (maxWidth / 2));
 
         canRoll = true;
     }
