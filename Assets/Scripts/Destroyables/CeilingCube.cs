@@ -36,7 +36,7 @@ public class CeilingCube : Destroyable {
             if (health <= 0)
             {
                 canDamage = false;
-                if (gameObject.GetComponent<Rigidbody>() != null) { gameObject.AddComponent<Rigidbody>(); }
+                if (gameObject.GetComponent<Rigidbody>() == null) { gameObject.AddComponent<Rigidbody>(); }
                 PlayerController.ceiling[ordY, ordX] = null;
             }
         }
@@ -56,7 +56,7 @@ public class CeilingCube : Destroyable {
         health = maxHealth;
         if (gameObject.transform.childCount > 0)
         {
-            gameObject.transform.GetChild(0).GetComponent<Renderer>().material.color = Color.Lerp(Color.red, Color.white, health / maxHealth);
+            gameObject.transform.GetChild(0).GetComponent<Renderer>().material.color = Color.Lerp(Color.red, Color.white, 1);
         }
     }
 

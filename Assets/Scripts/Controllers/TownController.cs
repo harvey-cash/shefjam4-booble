@@ -6,7 +6,7 @@ public class TownController : MonoBehaviour {
     [SerializeField]
     private static int totalArea = 0;
     [SerializeField]
-    private static int winArea = 100;
+    private static int winArea = 150;
     public void SetWinArea(int area) { winArea = area; }
     public int GetProgress() { return (int)(100 * (totalArea / (float)winArea)); }
 
@@ -27,7 +27,8 @@ public class TownController : MonoBehaviour {
     public bool GetDamageOverTime() { return damageOverTime; }
 
     public void DeltaArea()
-    {
+    {      
+
         int sum = 0;
         for (int i = 0; i < towns.Count; i++)
         {
@@ -35,32 +36,38 @@ public class TownController : MonoBehaviour {
         }
         totalArea = sum;
 
+        GameController.textControl.ProgressOutput(GetProgress().ToString() + " / 100");
+
         if (totalArea <= 1) { StartCoroutine(GameController.gameControl.Lose()); }
         else if (totalArea >= winArea) {
             StartCoroutine(GameController.gameControl.Win());
-        }
+        }        
 
-        GameController.textControl.ProgressOutput(GetProgress().ToString() + " / 100");
-
-        if (GetProgress() < 25) {
+        if (GetProgress() < 20) {
             GameController.playerControl.tilesDegrade = false;
             GameController.playerControl.rollSpeed = 3;
             GameController.meteorControl.meteorFreq = 0.5f;
         }
-        else if (GetProgress() < 50) {
+        else if (GetProgress() < 40) {
             GameController.playerControl.tilesDegrade = false;
             GameController.playerControl.rollSpeed = 4;
             GameController.meteorControl.meteorFreq = 1f;
         }
-        else if (GetProgress() < 75) {
+        else if (GetProgress() < 60) {
             GameController.playerControl.tilesDegrade = true;
             GameController.playerControl.rollSpeed = 5;
             GameController.meteorControl.meteorFreq = 1.5f;
         }
-        else if (GetProgress() < 100)
+        else if (GetProgress() < 80)
         {
             GameController.playerControl.tilesDegrade = true;
             GameController.playerControl.rollSpeed = 7;
+            GameController.meteorControl.meteorFreq = 2f;
+        }
+        else if (GetProgress() < 100)
+        {
+            GameController.playerControl.tilesDegrade = true;
+            GameController.playerControl.rollSpeed = 9;
             GameController.meteorControl.meteorFreq = 2.5f;
         }
 
