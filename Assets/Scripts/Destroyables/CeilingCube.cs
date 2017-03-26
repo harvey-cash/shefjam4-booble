@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CeilingCube : MonoBehaviour {
+public class CeilingCube : Destroyable {
 
     [SerializeField] private int health;
-    private int maxHealth = 100;
+    private int maxHealth = 100;    
+
     private int ordX, ordY;
     public void SetOrds(int y, int x)
     {
@@ -19,7 +20,7 @@ public class CeilingCube : MonoBehaviour {
     }
 
     private bool canDamage = true;
-	public void Damage(int damage)
+	public override void Damage(int damage)
     {
         if(canDamage)
         {
@@ -35,14 +36,17 @@ public class CeilingCube : MonoBehaviour {
                 canDamage = false;
                 gameObject.AddComponent<Rigidbody>();
                 PlayerController.ceiling[ordY, ordX] = null;
-
             }
         }
         
     }
 
-    void Update()
+    public void Repair()
     {
-        //Damage(1);
+        health = maxHealth;
+        if (gameObject.transform.childCount > 0)
+        {
+            gameObject.transform.GetChild(0).GetComponent<Renderer>().material.color = Color.Lerp(Color.red, Color.white, health / (float)maxHealth);
+        }
     }
 }

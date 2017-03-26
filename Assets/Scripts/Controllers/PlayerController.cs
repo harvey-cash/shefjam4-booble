@@ -9,14 +9,13 @@ public class PlayerController : MonoBehaviour
     public static CeilingCube[,] ceiling = new CeilingCube[maxWidth, maxWidth];
 
     private Transform ceilingParent;
-    private Vector3 startVector;
 
     void Start()
     {
-        startVector = transform.position;
-
         ceilingParent = new GameObject("Ceiling Parent").transform;
+        /*
         ceiling[maxWidth / 2, maxWidth / 2] = Instantiate((GameObject)Resources.Load("Prefabs/CentreCube")).GetComponent<CeilingCube>();
+        */
         
     }
 
@@ -30,7 +29,11 @@ public class PlayerController : MonoBehaviour
             ceiling[j, i].transform.parent = ceilingParent;
 
             //transform.position = startVector + Vector3.up;
-        }        
+        }
+        else
+        {
+            ceiling[j, i].Repair();
+        }
     }
     
 
@@ -71,8 +74,10 @@ public class PlayerController : MonoBehaviour
     {
         canRoll = false;
 
-        Transform newTransform = new GameObject().transform;
-        newTransform = GetNextTransform(newTransform, rotatePoint, axis);
+        GameObject nextTransform = GetNextTransform(new GameObject().transform, rotatePoint, axis);
+        Vector3 nextPos = nextTransform.transform.position;
+        Quaternion nextRot = nextTransform.transform.rotation;
+        Destroy(nextTransform);
 
         float totalRotation = 0;
         while (totalRotation < 90)
@@ -83,22 +88,21 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        transform.position = newTransform.position;
-        transform.rotation = newTransform.rotation;
-        Destroy(newTransform.gameObject);
+        transform.position = nextPos;
+        transform.rotation = nextRot;
         
         BuildCeiling((int)Mathf.Round(transform.position.z) + (maxWidth / 2), (int)Mathf.Round(transform.position.x) + (maxWidth / 2));
 
         canRoll = true;
     }
 
-    private Transform GetNextTransform(Transform temporary, Vector3 rotatePoint, Vector3 axis)
+    private GameObject GetNextTransform(Transform temporary, Vector3 rotatePoint, Vector3 axis)
     {
         temporary.position = transform.position;
         temporary.rotation = transform.rotation;
 
         temporary.RotateAround(rotatePoint, axis, 90);
 
-        return temporary;
+        return temporary.gameObject;
     }
 }
