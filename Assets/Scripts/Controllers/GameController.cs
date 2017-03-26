@@ -13,8 +13,8 @@ public class GameController : MonoBehaviour {
     public GameObject player;
 
     private int level = 0;
+    private GameObject currentLevel;
     private bool canChangeLevel = true;
-    public GameObject currentLevel;
 
     void Start () {
         gameControl = this;
@@ -22,8 +22,10 @@ public class GameController : MonoBehaviour {
         townControl = gameObject.GetComponent<TownController>();
         meteorControl = gameObject.GetComponent<MeteorController>();
         textControl = gameObject.GetComponent<TextController>();
-        
+
+        textControl.ProgressOutput("");
         currentLevel = Instantiate((GameObject)Resources.Load("Levels/Level" + GetString(level)));
+
         StartCoroutine(textControl.PrintOutput(" Press Space"));
     }
 
@@ -33,7 +35,7 @@ public class GameController : MonoBehaviour {
         {
             canChangeLevel = false;
             textControl.output.text = "";
-            StartCoroutine(NextLevel());
+            StartCoroutine(StartGame());
         }
         if(Input.GetKeyDown(KeyCode.Escape))
         {
@@ -41,30 +43,25 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    private IEnumerator NextLevel()
+    private IEnumerator StartGame()
     {
-        level++;
-        Destroy(currentLevel);
+        level = 1;
         playerControl.Reset();
+        Destroy(currentLevel);        
         currentLevel = Instantiate((GameObject)Resources.Load("Levels/Level" + GetString(level)));
-        StartCoroutine(textControl.PrintOutput(" Level " + GetString(level)));
+        textControl.ProgressOutput("9 / 100");
         yield return new WaitForSeconds(2.2f);
 
-        meteorControl.Begin();
+        meteorControl.Begin();        
     }
 
     public IEnumerator Win()
     {
-        if(level < 4)
-        {
-            StartCoroutine(NextLevel());
-        }
-        else
-        {
-            StartCoroutine(textControl.PrintOutput(" You Win!"));
-            yield return new WaitForSeconds(2.2f);
-            StartCoroutine(textControl.PrintOutput(" Press ESC!"));
-        }
+        meteorControl.Stop();
+        townControl.Stop();
+        StartCoroutine(textControl.PrintOutput(" You Win!"));
+        yield return new WaitForSeconds(2.2f);
+        StartCoroutine(textControl.PrintOutput(" Press ESC"));
     }
 
     public IEnumerator Lose()

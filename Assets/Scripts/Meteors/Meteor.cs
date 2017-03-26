@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Meteor : MonoBehaviour {
-    private int minDamage = 20, maxDamage = 100;
+    private int minDamage = 99, maxDamage = 100;
     private bool canDamage = true;
 
 	void OnTriggerEnter(Collider cube)
@@ -18,7 +18,7 @@ public class Meteor : MonoBehaviour {
             else if (cube.gameObject.GetComponent<Destroyable>() != null)
             {
                 canDamage = false;
-                cube.gameObject.GetComponent<Destroyable>().Damage(Random.Range(minDamage, maxDamage));
+                cube.gameObject.GetComponent<Destroyable>().Damage(Random.Range(minDamage, maxDamage + 1));
                 Destroy(gameObject);
             }
         }        

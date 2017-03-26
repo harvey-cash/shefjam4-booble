@@ -25,7 +25,7 @@ public class MeteorSpawner : MonoBehaviour
                 meteor.transform.position = spawnPos +
                                             (Random.Range(-target.transform.localScale.z / 2, target.transform.localScale.z / 2) * Vector3.forward) +
                                             (Random.Range(-target.transform.localScale.x / 2, target.transform.localScale.x / 2) * Vector3.right);
-                meteor.GetComponent<Rigidbody>().velocity = Vector3.down * 5;
+                meteor.GetComponent<Rigidbody>().velocity = Vector3.down;
             }
             
         }

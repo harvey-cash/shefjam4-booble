@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MeteorController : MonoBehaviour {
-    public static float meteorFreq = 0.5f; //per second
+    public float meteorFreq = 0.5f; //per second
     public static GameObject meteorParent;
 
     private static List<MeteorSpawner> spawners = new List<MeteorSpawner>();

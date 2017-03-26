@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class CeilingCube : Destroyable {
 
-    [SerializeField] private int health;
-    private int maxHealth = 100;    
+    [SerializeField] private float health;
+    private int maxHealth = 100;
+    private bool degrade;
 
     private int ordX, ordY;
     public void SetOrds(int y, int x)
@@ -17,10 +18,11 @@ public class CeilingCube : Destroyable {
     void Start()
     {
         health = maxHealth;
+        degrade = GameController.townControl.GetDamageOverTime();
     }
 
     private bool canDamage = true;
-	public override void Damage(int damage)
+	public override void Damage(float damage)
     {
         if(canDamage)
         {
@@ -28,7 +30,7 @@ public class CeilingCube : Destroyable {
 
             if(gameObject.transform.childCount > 0)
             {
-                gameObject.transform.GetChild(0).GetComponent<Renderer>().material.color = Color.Lerp(Color.red, Color.white, health / (float)maxHealth);
+                gameObject.transform.GetChild(0).GetComponent<Renderer>().material.color = Color.Lerp(Color.red, Color.white, health / maxHealth);
             }
             
             if (health <= 0)
@@ -46,7 +48,13 @@ public class CeilingCube : Destroyable {
         health = maxHealth;
         if (gameObject.transform.childCount > 0)
         {
-            gameObject.transform.GetChild(0).GetComponent<Renderer>().material.color = Color.Lerp(Color.red, Color.white, health / (float)maxHealth);
+            gameObject.transform.GetChild(0).GetComponent<Renderer>().material.color = Color.Lerp(Color.red, Color.white, health / maxHealth);
         }
     }
+
+    void Update()
+    {
+        if (degrade) { Damage(Time.deltaTime * (maxHealth / 60)); }
+    }
+
 }

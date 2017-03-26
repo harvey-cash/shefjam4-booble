@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private bool canRoll = true;
-    private const float ROLL_SPEED = 3;
+    public float ROLL_SPEED;
     private IEnumerator Roll(Vector3 rotatePoint, Vector3 axis)
     {
         canRoll = false;

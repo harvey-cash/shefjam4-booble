@@ -6,10 +6,11 @@ using UnityEngine;
 public class TextController : MonoBehaviour {
     
     public Text output;
-    //public Text UI;
+    public Text screen;
 
     public IEnumerator PrintOutput(string text)
     {
+        output.transform.parent.GetComponent<RectTransform>().position = GameController.townControl.GetTextPos();
         output.text = "";
         for (int i = 0; i < text.Length; i++)
         {
@@ -25,5 +26,10 @@ public class TextController : MonoBehaviour {
             yield return new WaitForSeconds(0.1f);
 
         }
+    }
+
+    public void ProgressOutput(string progress)
+    {
+        screen.text = progress;
     }
 }

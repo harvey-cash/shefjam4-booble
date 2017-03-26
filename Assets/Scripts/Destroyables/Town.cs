@@ -20,7 +20,7 @@ public class Town : Destroyable {
     }
     public int GetArea() { return (int)(transform.localScale.x * transform.localScale.z); }
 
-    public override void Damage(int damage)
+    public override void Damage(float damage)
     {
         if(canChange)
         {
