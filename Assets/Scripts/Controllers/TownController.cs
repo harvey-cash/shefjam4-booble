@@ -6,7 +6,7 @@ public class TownController : MonoBehaviour {
     [SerializeField]
     private static int totalArea = 0;
     [SerializeField]
-    private static int winArea = 30;
+    private static int winArea = 25;
     public void SetWinArea(int area) { winArea = area; }
 
     public void DeltaArea()
@@ -18,8 +18,8 @@ public class TownController : MonoBehaviour {
         }
         totalArea = sum;
 
-        if(totalArea <= 1) { Debug.Log("YOU LOSE"); }
-        if (totalArea >= winArea) { Debug.Log("YOU WIN"); }
+        if(totalArea <= 1) { StartCoroutine(GameController.gameControl.Lose()); }
+        if (totalArea >= winArea) { StartCoroutine(GameController.gameControl.Win()); }
     }
 
     public static List<Town> towns = new List<Town>();

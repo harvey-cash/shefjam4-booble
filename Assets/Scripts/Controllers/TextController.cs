@@ -6,6 +6,7 @@ using UnityEngine;
 public class TextController : MonoBehaviour {
     
     public Text output;
+    //public Text UI;
 
     public IEnumerator PrintOutput(string text)
     {

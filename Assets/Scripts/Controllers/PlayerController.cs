@@ -9,14 +9,25 @@ public class PlayerController : MonoBehaviour
     public static CeilingCube[,] ceiling = new CeilingCube[maxWidth, maxWidth];
 
     private Transform ceilingParent;
+    private Vector3 startVector;
 
     void Start()
     {
+        startVector = transform.position;
         ceilingParent = new GameObject("Ceiling Parent").transform;
-        /*
-        ceiling[maxWidth / 2, maxWidth / 2] = Instantiate((GameObject)Resources.Load("Prefabs/CentreCube")).GetComponent<CeilingCube>();
-        */
         
+    }
+
+    public void Reset()
+    {
+        for(int i = 0; i < maxWidth; i++)
+        {
+            for (int j = 0; j < maxWidth; j++)
+            {
+                if (ceiling[j, i] != null) { Destroy(ceiling[j, i].gameObject); }
+                transform.position = startVector;
+            }
+        }
     }
 
     void BuildCeiling(int j, int i)

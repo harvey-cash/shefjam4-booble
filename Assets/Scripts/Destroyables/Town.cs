@@ -5,7 +5,7 @@ using UnityEngine;
 public class Town : Destroyable {
     
     private int growBy = 1;
-    private float growthRate = 3; //per minute
+    private float growthRate = 5; //per minute
     private TownController controller;
 
     public void Start()

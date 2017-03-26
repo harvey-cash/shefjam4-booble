@@ -35,10 +35,7 @@ public class MeteorController : MonoBehaviour {
         yield return new WaitForSeconds(1f / meteorFreq);
 
         if (play) {
-            for (int i = 0; i < spawners.Count; i++)
-            {
-                spawners[i].Shower();
-            }
+            spawners[Random.Range(0, spawners.Count)].Shower();
             StartCoroutine(MeteorShower());
         }      
 
