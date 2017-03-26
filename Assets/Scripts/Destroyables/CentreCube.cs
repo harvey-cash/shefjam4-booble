@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CentreCube : Destroyable {
 
-	public override void Damage(int damage)
+	public override void Damage(float damage)
     {
         //not ACTUALLY destroyable
     }

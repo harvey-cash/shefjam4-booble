@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     public static int maxWidth = 25;
     public static CeilingCube[,] ceiling = new CeilingCube[maxWidth, maxWidth];
+    public bool tilesDegrade = false;
 
     private Transform ceilingParent;
     private Vector3 startVector;
@@ -38,6 +39,7 @@ public class PlayerController : MonoBehaviour
             ceiling[j, i].SetOrds(j, i);
             ceiling[j, i].transform.position = new Vector3(i - (maxWidth / 2), 0, j - (maxWidth / 2));
             ceiling[j, i].transform.parent = ceilingParent;
+            ceiling[j, i].degrade = tilesDegrade;
 
             //transform.position = startVector + Vector3.up;
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Meteor : MonoBehaviour {
-    private int minDamage = 20, maxDamage = 100;
+    private int minDamage = 60, maxDamage = 120;
     private bool canDamage = true;
 
 	void OnTriggerEnter(Collider cube)

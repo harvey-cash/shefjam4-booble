@@ -4,5 +4,5 @@ using UnityEngine;
 
 public abstract class Destroyable : MonoBehaviour {
 
-    public abstract void Damage(int damage);
+    public abstract void Damage(float damage);
 }

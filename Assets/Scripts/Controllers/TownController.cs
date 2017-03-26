@@ -6,8 +6,9 @@ public class TownController : MonoBehaviour {
     [SerializeField]
     private static int totalArea = 0;
     [SerializeField]
-    private static int winArea = 25;
+    private static int winArea = 100;
     public void SetWinArea(int area) { winArea = area; }
+    public int GetProgress() { return (int)(100 * (totalArea / (float)winArea)); }
 
     public void DeltaArea()
     {
@@ -18,8 +19,23 @@ public class TownController : MonoBehaviour {
         }
         totalArea = sum;
 
-        if(totalArea <= 1) { StartCoroutine(GameController.gameControl.Lose()); }
-        if (totalArea >= winArea) { StartCoroutine(GameController.gameControl.Win()); }
+        if (totalArea <= 1) { StartCoroutine(GameController.gameControl.Lose()); }
+        else if (totalArea >= winArea) { StartCoroutine(GameController.gameControl.Win()); }
+
+        else if (GetProgress() < 25) {
+            GameController.playerControl.tilesDegrade = false;
+        }
+        else if (GetProgress() < 50) {
+            GameController.playerControl.tilesDegrade = false;
+        }
+        else if (GetProgress() < 75) {
+            GameController.playerControl.tilesDegrade = true;
+        }
+        else if (GetProgress() < 100)
+        {
+            GameController.playerControl.tilesDegrade = true;
+        }
+
     }
 
     public static List<Town> towns = new List<Town>();
