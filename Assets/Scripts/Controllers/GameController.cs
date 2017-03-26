@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,7 +27,7 @@ public class GameController : MonoBehaviour {
         textControl.ProgressOutput("");
         currentLevel = Instantiate((GameObject)Resources.Load("Levels/Level" + GetString(level)));
 
-        StartCoroutine(textControl.PrintOutput(" Press Space"));
+        StartCoroutine(textControl.PrintOutput(" Boogle. "));
     }
 
     void Update()
@@ -60,8 +61,9 @@ public class GameController : MonoBehaviour {
     {
         meteorControl.Stop();
         townControl.Stop();
-        StartCoroutine(textControl.PrintOutput(" You Win!"));
-        yield return new WaitForSeconds(2.2f);
+        playerControl.Win();
+        textControl.ProgressOutput(" You Win!");
+        yield return new WaitForEndOfFrame();
     }
 
     public IEnumerator Lose()
@@ -69,8 +71,6 @@ public class GameController : MonoBehaviour {
         level = 0;
         Destroy(currentLevel);
         StartCoroutine(textControl.PrintOutput(" You Lose!"));
-        yield return new WaitForSeconds(2.2f);
-        StartCoroutine(textControl.PrintOutput(" Press Space"));
         yield return new WaitForSeconds(2.2f);
 
         canChangeLevel = true;

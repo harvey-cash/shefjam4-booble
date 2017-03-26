@@ -40,7 +40,9 @@ public class TownController : MonoBehaviour {
             StartCoroutine(GameController.gameControl.Win());
         }
 
-        else if (GetProgress() < 25) {
+        GameController.textControl.ProgressOutput(GetProgress().ToString() + " / 100");
+
+        if (GetProgress() < 25) {
             GameController.playerControl.tilesDegrade = false;
             GameController.playerControl.rollSpeed = 3;
             GameController.meteorControl.meteorFreq = 0.5f;

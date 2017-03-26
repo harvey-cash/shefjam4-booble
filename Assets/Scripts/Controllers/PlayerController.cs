@@ -31,6 +31,20 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void Win()
+    {
+        for (int i = 0; i < maxWidth; i++)
+        {
+            for (int j = 0; j < maxWidth; j++)
+            {
+                if (ceiling[j, i] != null && ceiling[j, i].GetComponent<Rigidbody>() == null) {
+                    ceiling[j, i].gameObject.AddComponent<Rigidbody>();
+                }
+            }
+            Physics.gravity = new Vector3(0, 3, 0);
+        }
+    }
+
     void BuildCeiling(int j, int i)
     {
         if(ceiling[j, i] == null)

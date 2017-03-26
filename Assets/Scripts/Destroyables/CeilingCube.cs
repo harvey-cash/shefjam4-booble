@@ -18,7 +18,7 @@ public class CeilingCube : Destroyable {
     void Start()
     {
         health = maxHealth;
-        degrade = GameController.townControl.GetDamageOverTime();
+        degrade = GameController.playerControl.tilesDegrade;
     }
 
     private bool canDamage = true;
@@ -36,7 +36,7 @@ public class CeilingCube : Destroyable {
             if (health <= 0)
             {
                 canDamage = false;
-                gameObject.AddComponent<Rigidbody>();
+                if (gameObject.GetComponent<Rigidbody>() != null) { gameObject.AddComponent<Rigidbody>(); }
                 PlayerController.ceiling[ordY, ordX] = null;
             }
         }
@@ -47,7 +47,7 @@ public class CeilingCube : Destroyable {
     {
         if(degrade)
         {
-            Damage((maxHealth / 60) * Time.deltaTime);
+            Damage((maxHealth / 60) * 2 * Time.deltaTime);
         }
     }
 
@@ -58,11 +58,6 @@ public class CeilingCube : Destroyable {
         {
             gameObject.transform.GetChild(0).GetComponent<Renderer>().material.color = Color.Lerp(Color.red, Color.white, health / maxHealth);
         }
-    }
-
-    void Update()
-    {
-        if (degrade) { Damage(Time.deltaTime * (maxHealth / 60)); }
     }
 
 }
