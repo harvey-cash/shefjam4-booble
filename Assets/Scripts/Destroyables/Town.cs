@@ -6,10 +6,11 @@ public class Town : Destroyable {
     
     private int growBy = 1;
     private float growthRate = 3; //per minute
-    public TownController controller;
+    private TownController controller;
 
     public void Start()
     {
+        controller = GameController.townControl;
         StartCoroutine(Grow());
         TownController.AddTown(this);
     }

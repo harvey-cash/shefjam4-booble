@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour {
 
-    TownController townControl;
-    MeteorController meteorControl;
-    TextController textControl;
+    public static GameController gameControl;
+    public static TownController townControl;
+    public static MeteorController meteorControl;
+    public static TextController textControl;
 
     private int level = 1;
+
+    GameObject currentLevel = null;
 
     public void Win()
     {
@@ -32,34 +35,49 @@ public class GameController : MonoBehaviour {
         meteorControl.Stop();
     }
 
-    private void LevelOne()
+    private IEnumerator LevelOne()
     {
+        if (currentLevel != null) { Destroy(currentLevel); }
+        if (currentLevel == null) { currentLevel = Instantiate((GameObject)Resources.Load("Levels/LevelOne")); }
+        level = 1;
         textControl.PrintOutput(" Level " + GetString(level));
+        yield return new WaitForSeconds(2.2f);
         meteorControl.Begin();
     }
-    private void LevelTwo()
+    private IEnumerator LevelTwo()
     {
-
+        if (currentLevel != null) { Destroy(currentLevel); }
+        if (currentLevel == null) { currentLevel = Instantiate((GameObject)Resources.Load("Levels/LevelTwo")); }
+        level = 2;
+        textControl.PrintOutput(" Level " + GetString(level));
+        yield return new WaitForSeconds(2.2f);
+        meteorControl.Begin();
     }
-    private void LevelThree()
+    private IEnumerator LevelThree()
     {
-
+        if (currentLevel != null) { Destroy(currentLevel); }
+        if (currentLevel == null) { currentLevel = Instantiate((GameObject)Resources.Load("Levels/LevelThree")); }
+        level = 3;
+        textControl.PrintOutput(" Level " + GetString(level));
+        yield return new WaitForSeconds(2.2f);
+        meteorControl.Begin();
     }
 
 
     void Start () {
+        gameControl = this;
         townControl = gameObject.GetComponent<TownController>();
         meteorControl = gameObject.GetComponent<MeteorController>();
         textControl = gameObject.GetComponent<TextController>();
 
-        textControl.PrintOutput(" Press Space");
+        StartCoroutine(textControl.PrintOutput(" Press Space"));
     }
 
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            LevelOne();
+            StartCoroutine(LevelOne());
         }
         if(Input.GetKeyDown(KeyCode.Escape))
         {
