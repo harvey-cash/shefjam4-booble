@@ -33,7 +33,7 @@ public class GameController : MonoBehaviour {
         {
             canChangeLevel = false;
             textControl.output.text = "";
-            StartCoroutine(NextLevel());
+            StartCoroutine(StartLevel());
         }
         if(Input.GetKeyDown(KeyCode.Escape))
         {
@@ -41,30 +41,25 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    private IEnumerator NextLevel()
+    private IEnumerator StartLevel()
     {
-        level++;
-        Destroy(currentLevel);
+        level = 1;
         playerControl.Reset();
+        Destroy(currentLevel);
+        
         currentLevel = Instantiate((GameObject)Resources.Load("Levels/Level" + GetString(level)));
-        StartCoroutine(textControl.PrintOutput(" Level " + GetString(level)));
         yield return new WaitForSeconds(2.2f);
 
         meteorControl.Begin();
+        canChangeLevel = true;
     }
 
     public IEnumerator Win()
     {
-        if(level < 4)
-        {
-            StartCoroutine(NextLevel());
-        }
-        else
-        {
-            StartCoroutine(textControl.PrintOutput(" You Win!"));
-            yield return new WaitForSeconds(2.2f);
-            StartCoroutine(textControl.PrintOutput(" Press ESC!"));
-        }
+        meteorControl.Stop();
+        townControl.Stop();
+        StartCoroutine(textControl.PrintOutput(" You Win!"));
+        yield return new WaitForSeconds(2.2f);
     }
 
     public IEnumerator Lose()

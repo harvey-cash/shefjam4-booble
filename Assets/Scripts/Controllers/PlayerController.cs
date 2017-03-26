@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private bool canRoll = true;
-    private const float ROLL_SPEED = 3;
+    public float rollSpeed = 3;
     private IEnumerator Roll(Vector3 rotatePoint, Vector3 axis)
     {
         canRoll = false;
@@ -95,8 +95,8 @@ public class PlayerController : MonoBehaviour
         float totalRotation = 0;
         while (totalRotation < 90)
         {
-            transform.RotateAround(rotatePoint, axis, 90 * Time.deltaTime * ROLL_SPEED);
-            totalRotation += 90 * Time.deltaTime * ROLL_SPEED;
+            transform.RotateAround(rotatePoint, axis, 90 * Time.deltaTime * rollSpeed);
+            totalRotation += 90 * Time.deltaTime * rollSpeed;
 
             yield return new WaitForEndOfFrame();
         }

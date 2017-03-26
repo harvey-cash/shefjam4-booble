@@ -20,20 +20,30 @@ public class TownController : MonoBehaviour {
         totalArea = sum;
 
         if (totalArea <= 1) { StartCoroutine(GameController.gameControl.Lose()); }
-        else if (totalArea >= winArea) { StartCoroutine(GameController.gameControl.Win()); }
+        else if (totalArea >= winArea) {
+            StartCoroutine(GameController.gameControl.Win());
+        }
 
         else if (GetProgress() < 25) {
             GameController.playerControl.tilesDegrade = false;
+            GameController.playerControl.rollSpeed = 3;
+            GameController.meteorControl.meteorFreq = 0.5f;
         }
         else if (GetProgress() < 50) {
             GameController.playerControl.tilesDegrade = false;
+            GameController.playerControl.rollSpeed = 4;
+            GameController.meteorControl.meteorFreq = 1f;
         }
         else if (GetProgress() < 75) {
             GameController.playerControl.tilesDegrade = true;
+            GameController.playerControl.rollSpeed = 5;
+            GameController.meteorControl.meteorFreq = 1.5f;
         }
         else if (GetProgress() < 100)
         {
             GameController.playerControl.tilesDegrade = true;
+            GameController.playerControl.rollSpeed = 7;
+            GameController.meteorControl.meteorFreq = 2.5f;
         }
 
     }
@@ -41,7 +51,7 @@ public class TownController : MonoBehaviour {
     public static List<Town> towns = new List<Town>();
     public static void AddTown(Town newTown) { towns.Add(newTown); }
 
-    private void Stop()
+    public void Stop()
     {
         for(int i = 0; i < towns.Count; i++)
         {
