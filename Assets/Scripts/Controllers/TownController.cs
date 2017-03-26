@@ -7,8 +7,8 @@ public class TownController : MonoBehaviour {
     private static int totalArea = 0;
     [SerializeField]
     private static int winArea = 100;
-    public int GetProgress() { return (int)(100 * (totalArea / (float)winArea)); }
     public void SetWinArea(int area) { winArea = area; }
+    public int GetProgress() { return (int)(100 * (totalArea / (float)winArea)); }
 
     public Vector3 GetTextPos()
     {
@@ -35,35 +35,33 @@ public class TownController : MonoBehaviour {
         }
         totalArea = sum;
 
-        GameController.textControl.ProgressOutput(GetProgress().ToString() + " / 100");
+        if (totalArea <= 1) { StartCoroutine(GameController.gameControl.Lose()); }
+        else if (totalArea >= winArea) {
+            StartCoroutine(GameController.gameControl.Win());
+        }
 
-        if(totalArea <= 1) { StartCoroutine(GameController.gameControl.Lose()); }
-
-        if (GetProgress() < 25)
-        {
-            damageOverTime = false;
-            GameController.playerControl.ROLL_SPEED = 3;
+        else if (GetProgress() < 25) {
+            GameController.playerControl.tilesDegrade = false;
+            GameController.playerControl.rollSpeed = 3;
             GameController.meteorControl.meteorFreq = 0.5f;
         }
-        if (GetProgress() >= 25 && GetProgress() < 50) {
-            damageOverTime = false;
-            GameController.playerControl.ROLL_SPEED = 4;
-            GameController.meteorControl.meteorFreq = 1;
+        else if (GetProgress() < 50) {
+            GameController.playerControl.tilesDegrade = false;
+            GameController.playerControl.rollSpeed = 4;
+            GameController.meteorControl.meteorFreq = 1f;
         }
-        if (GetProgress() >= 50 && GetProgress() < 75)
-        {
-            damageOverTime = true;
-            GameController.playerControl.ROLL_SPEED = 5;
+        else if (GetProgress() < 75) {
+            GameController.playerControl.tilesDegrade = true;
+            GameController.playerControl.rollSpeed = 5;
             GameController.meteorControl.meteorFreq = 1.5f;
         }
-        if (GetProgress() >= 75 && GetProgress() < 100)
+        else if (GetProgress() < 100)
         {
-            damageOverTime = true;
-            GameController.playerControl.ROLL_SPEED = 7;
+            GameController.playerControl.tilesDegrade = true;
+            GameController.playerControl.rollSpeed = 7;
             GameController.meteorControl.meteorFreq = 2.5f;
         }
 
-        if (totalArea >= winArea) { StartCoroutine(GameController.gameControl.Win()); }
     }
 
     public static List<Town> towns = new List<Town>();

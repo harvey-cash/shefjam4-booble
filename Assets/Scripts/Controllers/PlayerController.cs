@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     public static int maxWidth = 25;
     public static CeilingCube[,] ceiling = new CeilingCube[maxWidth, maxWidth];
+    public bool tilesDegrade = false;
 
     private Transform ceilingParent;
     private Vector3 startVector;
@@ -38,6 +39,7 @@ public class PlayerController : MonoBehaviour
             ceiling[j, i].SetOrds(j, i);
             ceiling[j, i].transform.position = new Vector3(i - (maxWidth / 2), 0, j - (maxWidth / 2));
             ceiling[j, i].transform.parent = ceilingParent;
+            ceiling[j, i].degrade = tilesDegrade;
 
             //transform.position = startVector + Vector3.up;
         }
@@ -80,7 +82,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private bool canRoll = true;
-    public float ROLL_SPEED;
+    public float rollSpeed = 3;
     private IEnumerator Roll(Vector3 rotatePoint, Vector3 axis)
     {
         canRoll = false;
@@ -93,8 +95,8 @@ public class PlayerController : MonoBehaviour
         float totalRotation = 0;
         while (totalRotation < 90)
         {
-            transform.RotateAround(rotatePoint, axis, 90 * Time.deltaTime * ROLL_SPEED);
-            totalRotation += 90 * Time.deltaTime * ROLL_SPEED;
+            transform.RotateAround(rotatePoint, axis, 90 * Time.deltaTime * rollSpeed);
+            totalRotation += 90 * Time.deltaTime * rollSpeed;
 
             yield return new WaitForEndOfFrame();
         }

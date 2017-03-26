@@ -6,7 +6,7 @@ public class CeilingCube : Destroyable {
 
     [SerializeField] private float health;
     private int maxHealth = 100;
-    private bool degrade;
+    public bool degrade = false;
 
     private int ordX, ordY;
     public void SetOrds(int y, int x)
@@ -41,6 +41,14 @@ public class CeilingCube : Destroyable {
             }
         }
         
+    }
+
+    void Update()
+    {
+        if(degrade)
+        {
+            Damage((maxHealth / 60) * Time.deltaTime);
+        }
     }
 
     public void Repair()
