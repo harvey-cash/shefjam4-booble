@@ -9,75 +9,26 @@ public class GameController : MonoBehaviour {
     public static MeteorController meteorControl;
     public static TextController textControl;
 
-    private int level = 1;
-
-    GameObject currentLevel = null;
-
-    public void Win()
-    {
-        level++;
-        meteorControl.Stop();
-        switch (level)
-        {
-            case 2:
-                LevelTwo();
-                break;
-            case 3:
-                LevelThree();
-                break;
-            default:
-                break;
-        }
-    }
-
-    public void Lose()
-    {
-        meteorControl.Stop();
-    }
-
-    private IEnumerator LevelOne()
-    {
-        if (currentLevel != null) { Destroy(currentLevel); }
-        if (currentLevel == null) { currentLevel = Instantiate((GameObject)Resources.Load("Levels/LevelOne")); }
-        level = 1;
-        textControl.PrintOutput(" Level " + GetString(level));
-        yield return new WaitForSeconds(2.2f);
-        meteorControl.Begin();
-    }
-    private IEnumerator LevelTwo()
-    {
-        if (currentLevel != null) { Destroy(currentLevel); }
-        if (currentLevel == null) { currentLevel = Instantiate((GameObject)Resources.Load("Levels/LevelTwo")); }
-        level = 2;
-        textControl.PrintOutput(" Level " + GetString(level));
-        yield return new WaitForSeconds(2.2f);
-        meteorControl.Begin();
-    }
-    private IEnumerator LevelThree()
-    {
-        if (currentLevel != null) { Destroy(currentLevel); }
-        if (currentLevel == null) { currentLevel = Instantiate((GameObject)Resources.Load("Levels/LevelThree")); }
-        level = 3;
-        textControl.PrintOutput(" Level " + GetString(level));
-        yield return new WaitForSeconds(2.2f);
-        meteorControl.Begin();
-    }
-
+    private int level = 0;
+    private bool canChangeLevel = true;
+    public GameObject currentLevel;
 
     void Start () {
         gameControl = this;
         townControl = gameObject.GetComponent<TownController>();
         meteorControl = gameObject.GetComponent<MeteorController>();
         textControl = gameObject.GetComponent<TextController>();
-
+        
+        currentLevel = Instantiate((GameObject)Resources.Load("Levels/LevelOne"));
         StartCoroutine(textControl.PrintOutput(" Press Space"));
     }
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space) && canChangeLevel)
         {
-            StartCoroutine(LevelOne());
+            canChangeLevel = false;
+            meteorControl.Begin();
         }
         if(Input.GetKeyDown(KeyCode.Escape))
         {

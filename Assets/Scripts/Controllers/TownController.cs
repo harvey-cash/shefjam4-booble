@@ -18,8 +18,8 @@ public class TownController : MonoBehaviour {
         }
         totalArea = sum;
 
-        if(totalArea <= 1) { gameObject.GetComponent<GameController>().Lose(); }
-        if (totalArea >= winArea) { gameObject.GetComponent<GameController>().Win(); }
+        if(totalArea <= 1) { Debug.Log("YOU LOSE"); }
+        if (totalArea >= winArea) { Debug.Log("YOU WIN"); }
     }
 
     public static List<Town> towns = new List<Town>();

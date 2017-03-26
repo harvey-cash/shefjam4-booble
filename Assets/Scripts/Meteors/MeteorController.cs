@@ -17,6 +17,7 @@ public class MeteorController : MonoBehaviour {
             GameObject meteorObject = new GameObject("spawner [" + i + "]");
             MeteorSpawner meteorSpawner = meteorObject.AddComponent<MeteorSpawner>();
             meteorSpawner.SetTarget(TownController.towns[i]);
+            meteorSpawner.transform.parent = TownController.towns[i].transform;
             spawners.Add(meteorSpawner);
         }
         StartCoroutine(MeteorShower());
