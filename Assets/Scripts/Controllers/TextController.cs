@@ -4,40 +4,25 @@ using UnityEngine.UI;
 using UnityEngine;
 
 public class TextController : MonoBehaviour {
+    
+    public Text output;
 
-    string[] words = { "Zero", "One", "Two", "Three", "Four", "Five", "Six" };
-    private string GetString(int number)
+    public IEnumerator PrintOutput(string text)
     {
-        return words[number];
-    }
-
-    public static int level = 1;
-    public Text levelText;
-
-    public void Start()
-    {
-        StartCoroutine(PrintLevel());
-    }
-
-    public IEnumerator PrintLevel()
-    {
-        string endText = " Level " + GetString(level);
-        for (int i = 0; i < endText.Length; i++) {
-            levelText.text = levelText.text + endText[i].ToString();
+        output.text = "";
+        for (int i = 0; i < text.Length; i++)
+        {
+            output.text = output.text + text[i].ToString();
             yield return new WaitForSeconds(0.1f);
+            
         }
         yield return new WaitForSeconds(2f);
-        for (int i = endText.Length; i > 0; i--)
+        for (int i = text.Length; i > 0; i--)
         {
-            levelText.text = "";
-            for (int j = 0; j < i; j++) { levelText.text += endText[j].ToString(); }
+            output.text = "";
+            for (int j = 0; j < i; j++) { output.text += text[j].ToString(); }
             yield return new WaitForSeconds(0.1f);
 
         }
-
-        gameObject.GetComponent<MeteorController>().Begin();
-
     }
-    
-
 }

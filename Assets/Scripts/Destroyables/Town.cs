@@ -6,9 +6,11 @@ public class Town : Destroyable {
     
     private int growBy = 1;
     private float growthRate = 3; //per minute
+    private TownController controller;
 
     public void Start()
     {
+        controller = GameController.townControl;
         StartCoroutine(Grow());
         TownController.AddTown(this);
     }
@@ -41,7 +43,7 @@ public class Town : Destroyable {
                 gameObject.GetComponent<Collider>().enabled = false;
                 canChange = false;
             }
-            TownController.DeltaArea();
+            controller.DeltaArea();
         }
 
         
@@ -66,8 +68,8 @@ public class Town : Destroyable {
                 if (Random.Range(0f, 1f) > 0.5f) { transform.position += (Vector3.left * growBy / 2); }
                 else { transform.position += (Vector3.right * growBy / 2); }
             }
-            //MeteorController.meteorFreq++;
-            TownController.DeltaArea();
+
+            controller.DeltaArea();
             StartCoroutine(Grow());
         }
         

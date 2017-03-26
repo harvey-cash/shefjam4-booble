@@ -6,14 +6,10 @@ public class TownController : MonoBehaviour {
     [SerializeField]
     private static int totalArea = 0;
     [SerializeField]
-    private static int money = 0, winArea = 30;
+    private static int winArea = 30;
+    public void SetWinArea(int area) { winArea = area; }
 
-    public void Start()
-    {
-        StartCoroutine(EarnMoney());
-    }
-
-    public static void DeltaArea()
+    public void DeltaArea()
     {
         int sum = 0;
         for (int i = 0; i < towns.Count; i++)
@@ -22,21 +18,14 @@ public class TownController : MonoBehaviour {
         }
         totalArea = sum;
 
-        if(totalArea <= 1) {  Debug.Log("You lose!"); MeteorController.Stop(); Stop(); }
-        if (totalArea >= winArea) { Debug.Log("You win!"); MeteorController.Stop(); Stop(); }
+        if(totalArea <= 1) { Debug.Log("YOU LOSE"); }
+        if (totalArea >= winArea) { Debug.Log("YOU WIN"); }
     }
 
     public static List<Town> towns = new List<Town>();
     public static void AddTown(Town newTown) { towns.Add(newTown); }
 
-    private IEnumerator EarnMoney()
-    {
-        yield return new WaitForSeconds(1f);
-        money += totalArea;
-        StartCoroutine(EarnMoney());
-    }
-
-    private static void Stop()
+    private void Stop()
     {
         for(int i = 0; i < towns.Count; i++)
         {
